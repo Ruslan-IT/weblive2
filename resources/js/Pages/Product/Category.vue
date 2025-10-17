@@ -61,7 +61,7 @@
                             class="mb-6"
                         >
                             <!-- Текстовый блок -->
-                            <div v-if="block.type === 'text'" class="text-block" v-html="block.description"></div>
+                            <div v-if="block.type === 'text'" class="text-block" v-html="fixImagePaths(block.description)"></div>
 
                             <!-- Фото блок -->
                             <img
@@ -151,6 +151,12 @@ defineProps({
 // Предзагрузка страницы оферты при наведении
 const preloadOferta = () => {
     router.preload('/oferta')
+}
+
+const fixImagePaths = (html) => {
+    if (!html) return ''
+    // Меняем //storage/... на /storage/...
+    return html.replace(/src="\/\/storage\//g, 'src="/storage/')
 }
 
 </script>
