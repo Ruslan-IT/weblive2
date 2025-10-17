@@ -29,12 +29,12 @@
                 class="product-card mb-10  pb-8"
             >
                 <div class="product-info">
-                    <h1 class="text-4xl md:text-5xl font-bold mb-6 text-center bg-clip-text text-transparent
+                    <h1 class="text-4xl py-4 md:text-5xl font-bold mb-6 text-center bg-clip-text text-transparent
                     bg-gradient-to-r from-blue-500 to-purple-600">
 
                         {{ product.title }}
                     </h1>
-                    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-6 text-center">
+<!--                    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight mb-6 text-center">
                         {{ product.title }}
                     </h1>
                     <h1 class="text-4xl md:text-5xl font-bold text-gray-900 drop-shadow-lg mb-6 text-center">
@@ -48,7 +48,7 @@
                         <p class="text-lg md:text-xl text-gray-600 mt-4">
                             Краткое описание или слоган продукта
                         </p>
-                    </div>
+                    </div>-->
 
 
                     <div class="product-description max-w-full mb-6" v-html="product.description"></div>
