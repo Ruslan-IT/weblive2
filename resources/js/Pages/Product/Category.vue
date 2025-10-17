@@ -114,7 +114,7 @@
                 <!-- Центр -->
                 <div class="text-center mb-4 md:mb-0 flex flex-col items-center">
                     <img src="/img/logo.png" alt="Логотип" class="w-10 h-10 mb-2 opacity-90" />
-                    <p>© 2022–2024 Все права защищены</p>
+                    <p>© 2022–2025 Все права защищены</p>
                 </div>
 
                 <!-- Правая колонка -->
