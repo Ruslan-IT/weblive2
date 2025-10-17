@@ -99,8 +99,10 @@ class ProductResource extends Resource
                             ->required(),
 
                         TinyEditor::make('description')
-                            ->label('Текст блока')
+                            ->label('Текст блока или фото')
                             ->profile('full')
+                            ->fileAttachmentsDisk('public') // Явно указываем диск
+                            ->fileAttachmentsDirectory('images/editor') // Папка для загрузок редактора
                             ->columnSpanFull()
                             ->visible(fn ($get) => $get('type') === 'text'),
 
