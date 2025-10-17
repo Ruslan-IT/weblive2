@@ -72,13 +72,16 @@
                             />
 
                             <!-- Кнопка -->
-                            <a
-                                v-if="block.type === 'button'"
-                                :href="block.button_url"
-                                class="inline-block px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-                            >
-                                {{ block.button_text }}
-                            </a>
+                            <div v-if="block.type === 'button'" class="flex justify-center my-6">
+                                <a
+                                    :href="block.button_url"
+                                    class="inline-block w-full sm:w-auto px-10 py-3 text-lg font-semibold text-white text-center
+                                       bg-blue-600 rounded-2xl shadow-md transition-all duration-300
+                                       hover:bg-blue-700 hover:shadow-lg active:scale-95"
+                                >
+                                    {{ block.button_text }}
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -96,7 +99,7 @@
                 v-if="products.length === 0"
                 class="text-center text-gray-500 py-10"
             >
-                В этой категории пока нет товаров
+                В этой категории пока нет страниц
             </div>
         </main>
 
