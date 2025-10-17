@@ -87,6 +87,17 @@ class ProductResource extends Resource
                 Repeater::make('content_blocks')
                     ->label('Контентные блоки')
                     ->orderable()
+                    ->collapsible() // ✅ позволяет сворачивать блоки
+                    ->collapsed()   // ✅ по умолчанию все блоки свернуты
+                    ->itemLabel(function (array $state): ?string {
+                        // ✅ Показываем название блока в заголовке свёрнутого блока
+                        return match ($state['type'] ?? null) {
+                            'text' => '📝 Текстовый блок',
+                            'image' => '🖼 Фото блок',
+                            'button' => '🔘 Кнопка: ' . ($state['button_text'] ?? 'Без текста'),
+                            default => 'Блок',
+                        };
+                    })
                     ->schema([
                         Select::make('type')
                             ->label('Тип блока')
