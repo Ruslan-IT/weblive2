@@ -96,7 +96,9 @@ return [
     |
     */
 
+
     'system_route_prefix' => 'filament',
+
 
     // Дополнительные настройки для TinyEditor
     'tiny_editor' => [
