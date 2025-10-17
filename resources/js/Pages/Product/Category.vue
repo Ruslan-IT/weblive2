@@ -61,7 +61,7 @@
                             class="mb-6"
                         >
                             <!-- Текстовый блок -->
-                            <div v-if="block.type === 'text'" class="text-block" v-html="fixImagePaths(block.description)"></div>
+                            <div v-if="block.type === 'text'" class="text-block" v-html="sanitizeBlock(block.description)"></div>
 
                             <!-- Фото блок -->
                             <img
@@ -153,11 +153,12 @@ const preloadOferta = () => {
     router.preload('/oferta')
 }
 
-const fixImagePaths = (html) => {
+const sanitizeBlock = (html) => {
     if (!html) return ''
-    // Меняем //storage/... на /storage/...
+    // Заменяем все //storage/... на /storage/...
     return html.replace(/src="\/\/storage\//g, 'src="/storage/')
 }
+
 
 </script>
 
