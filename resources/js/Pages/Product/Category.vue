@@ -8,7 +8,7 @@
     <div class="flex flex-col min-h-screen">
         <!-- HEADER -->
         <header class="py-2 border-b bg-white">
-            <div class="w-full px-6 mx-auto max-w-[1000px]">
+            <div class="w-full px-6 mx-auto max-w-[1400px]">
                 <div class="flex items-center justify-between h-12">
                     <a href="/" class="flex items-center gap-x-2">
                         <img width="30" src="/img/logo.png" alt="Webway Live">
@@ -141,6 +141,39 @@
 
 
 <script setup>
+import { onMounted, onBeforeUnmount } from 'vue'
+
+onMounted(() => {
+    // Создаём элемент с паутиной
+    const web = document.createElement('div')
+    web.classList.add('web-bg')
+    document.body.appendChild(web)
+
+    // Эффект движения при скролле
+    const handleScroll = () => {
+        const scrollOffset = window.scrollY * 0.2 // медленное движение при прокрутке
+        web.style.transform = `translateY(${scrollOffset}px)`
+    }
+
+    // Эффект параллакса от мыши
+    const handleMouseMove = (e) => {
+        const { innerWidth, innerHeight } = window
+        const x = (e.clientX / innerWidth - 0.5) * 20 // -10 ... +10 px
+        const y = (e.clientY / innerHeight - 0.5) * 20
+        web.style.transform = `translate(${x}px, ${y + window.scrollY * 0.2}px)`
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('mousemove', handleMouseMove)
+
+    onBeforeUnmount(() => {
+        window.removeEventListener('scroll', handleScroll)
+        window.removeEventListener('mousemove', handleMouseMove)
+    })
+})
+
+
+
 
 
 import { Link } from '@inertiajs/vue3'
@@ -167,7 +200,7 @@ const sanitizeBlock = (html) => {
 
 
 
-<style scoped>
+<style >
 
 .product-card {
     transition: all 0.3s ease;
@@ -180,6 +213,29 @@ const sanitizeBlock = (html) => {
     transition: transform 0.3s ease;
     will-change: transform;
 }
+/* Фоновая паутина */
+/*body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: url("/img/logo2.png") center top / cover no-repeat fixed;
+    opacity: 0.05; /
+    z-index: -1;
+    pointer-events: none;
+}*/
 
+.web-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url("/img/logo2.png") center center / cover no-repeat;
+    opacity: 0.03; /* еле заметно */
+    z-index: -1; /* под всем контентом */
+    pointer-events: none;
+    transition: transform 0.2s ease-out;
+    will-change: transform;
+}
 
 </style>
