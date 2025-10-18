@@ -1,0 +1,1 @@
+import{g as r,a as t,f as a,d as o,h as n,F as s,o as l}from"./app-DWqrHlQj.js";const c={__name:"Welcome",props:{canLogin:{type:Boolean},canRegister:{type:Boolean},laravelVersion:{type:String,required:!0},phpVersion:{type:String,required:!0}},setup(p){return(i,e)=>(l(),r(s,null,[t(o(n),{title:"Welcome"}),e[0]||(e[0]=a(" 41 ",-1))],64))}};export{c as default};
