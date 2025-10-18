@@ -5,6 +5,7 @@
 <!-- resources/js/Pages/Product/Category.vue -->
 
 <template>
+    <Head title="Webway" />
     <div class="flex flex-col min-h-screen">
         <!-- HEADER -->
         <header class="py-2 border-b bg-white">
@@ -173,8 +174,7 @@ onMounted(() => {
 /*Паутина движение */
 
 
-
-import { Link } from '@inertiajs/vue3'
+import {Head, Link} from '@inertiajs/vue3'
 
 defineProps({
     category: Object,
