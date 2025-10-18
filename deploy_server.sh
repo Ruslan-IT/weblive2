@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-cd /home/lionti9k/webway.live  # путь к проекту на Beget
+cd /home/l/lionti9k/webway.live  # путь к проекту на Beget
 
 # Подтягиваем изменения из GitHub
 git pull origin master
@@ -17,3 +17,6 @@ php8.3 artisan view:clear         # Очистить кеш Blade шаблоно
 php8.3 artisan event:clear        # Очистить кеш событий (если используется)
 
 echo "✅ Кэш почистили обновлён"
+
+
+# запуск команды sh deploy_server.sh
