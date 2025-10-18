@@ -1,0 +1,45 @@
+name: 🚀 Deploy Laravel to Beget
+
+on:
+  push:
+    branches:
+      - master  # деплой только при пуше в master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚀 Deploy to Beget server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}       # <-- добавь в Secrets: SSH_HOST=ruslabq5.beget.tech
+          username: ${{ secrets.SSH_USER }}   # <-- SSH_USER=ruslabq5
+          key: ${{ secrets.SSH_KEY }}         # <-- приватный ключ (добавь через Settings > Secrets > Actions)
+          port: 22                            # стандартный порт SSH
+          script: |
+            echo "🔗 Подключились к серверу Beget"
+            cd /home/r/ruslabq5/web-ruslan || exit 1
+
+            echo "📦 Обновляем код из Git..."
+            git pull origin master
+
+            echo "📚 Устанавливаем зависимости..."
+            php8.3 ~/composer.phar install --no-dev --optimize-autoloader
+
+            echo "🧹 Очищаем кеш..."
+            php8.3 artisan cache:clear
+            php8.3 artisan config:clear
+            php8.3 artisan route:clear
+            php8.3 artisan view:clear
+            php8.3 artisan event:clear
+
+            echo "⚡ Оптимизация..."
+            php8.3 artisan optimize
+
+            echo "🔗 Проверяем storage link..."
+            if [ ! -L "public/storage" ]; then
+              php8.3 artisan storage:link
+            fi
+
+            echo "✅ Деплой завершён успешно!"
