@@ -1,17 +1,22 @@
 <template>
+
+    <Head title="Webway - Oferta" />
     <div class="min-h-screen bg-gray-50 py-8">
-        <header class="py-2 border-b" style="padding-top: 0.5rem !important;">
+        <!-- HEADER -->
+        <header class="py-2 border-b bg-white">
             <div class="w-full px-6 mx-auto max-w-[1400px]">
                 <div class="flex items-center justify-between h-12">
                     <a href="/" class="flex items-center gap-x-2">
-                        <img width="30px" src="/img/logo.png" alt="Webway Live">
+                        <img width="30" src="/img/logo.png" alt="Webway Live">
                     </a>
-                    <div class="text-2xl font-extrabold tracking-tight font-bold text-black">
+
+                    <div class="text-2xl font-extrabold tracking-tight text-black">
                         Webway Live
                     </div>
                 </div>
             </div>
         </header>
+
 
         <div class="w-full px-6 mx-auto  mt-8">
             <div class="shadow-lg rounded-lg p-8">

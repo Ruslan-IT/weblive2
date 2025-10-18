@@ -72,21 +72,39 @@
                                 style="max-width: 100%; height: auto;"
                             />
 
-                            <!-- Кнопка -->
-                            <div v-if="block.type === 'button'" class="flex justify-center my-6">
-                                <a
-                                    :href="block.button_url"
-                                    class="inline-block w-full sm:w-auto px-10 py-3 text-lg font-semibold text-white text-center
-                                       bg-blue-600 rounded-2xl shadow-md transition-all duration-300
-                                       hover:bg-blue-700 hover:shadow-lg active:scale-95"
+                            <!-- Кнопка с чекбоксами и модальным окном -->
+                            <div v-if="block.type === 'button'" class="flex flex-col items-center my-6 space-y-4">
+
+                                <!-- Чекбоксы согласий -->
+                                <div class="space-y-2 text-sm text-gray-700">
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" v-model="consentPrivacy" />
+                                        <span>Я даю согласие на обработку данных в соответствии с <Link href="/privacy" class="text-blue-600 underline">Политикой конфиденциальности</Link></span>
+                                    </label>
+
+                                    <label class="flex items-center space-x-2">
+                                        <input type="checkbox" v-model="consentOferta" />
+                                        <span>Я принимаю условия <Link href="/oferta" class="text-blue-600 underline">Договора оферты</Link></span>
+                                    </label>
+                                </div>
+
+                                <!-- Кнопка -->
+                                <button
+                                    :disabled="!consentPrivacy || !consentOferta"
+                                    @click="openModal"
+                                    class="inline-block w-full sm:w-auto px-10 py-3 text-lg font-semibold text-white text-center rounded-2xl shadow-md transition-all duration-300"
+                                    :class="{
+                                      'bg-gray-400 cursor-not-allowed': !consentPrivacy || !consentOferta,
+                                      'bg-blue-600 hover:bg-blue-700 hover:shadow-lg active:scale-95': consentPrivacy && consentOferta
+                                    }"
                                 >
                                     {{ block.button_text }}
-                                </a>
-                            </div>
+                                </button>
                         </div>
                     </div>
 
 
+                </div>
                 </div>
             </div>
 
@@ -118,17 +136,67 @@
 
                 <!-- Правая колонка -->
                 <div class="text-right">
-                    <Link
+                    <Linkф
                         href="/oferta"
                         class="text-black hover:text-blue-800 underline transition"
                         @mouseenter="preloadOferta"
                     >
                         Публичная оферта
+                    </Linkф>
+                    <br>
+                     <Link
+                        href="/privacy"
+                        class="text-black hover:text-blue-800 underline transition"
+                        @mouseenter="preloadOferta"
+                    >
+                         Политика конфиденциальности
                     </Link>
 
+
                 </div>
+
             </div>
         </footer>
+
+
+        <!-- Модальное окно -->
+        <div v-if="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white p-6 rounded-2xl shadow-lg w-96 relative">
+                <button @click="closeModal" class="absolute top-2 right-3 text-gray-400 hover:text-gray-700 text-xl">&times;</button>
+                <h2 class="text-xl font-semibold mb-4 text-center">Введите данные для оплаты</h2>
+
+                <form @submit.prevent="submitForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Имя</label>
+                        <input
+                            v-model="form.name"
+                            type="text"
+                            class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                            placeholder="Введите имя"
+                        />
+                        <p v-if="errors.name" class="text-red-500 text-sm mt-1">{{ errors.name }}</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Телефон</label>
+                        <input
+                            v-model="form.phone"
+                            type="tel"
+                            class="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                            placeholder="+7 (___) ___-__-__"
+                        />
+                        <p v-if="errors.phone" class="text-red-500 text-sm mt-1">{{ errors.phone }}</p>
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="w-full py-2 text-white bg-blue-600 rounded-xl font-semibold hover:bg-blue-700 transition"
+                    >
+                        Оплатить
+                    </button>
+                </form>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -137,6 +205,50 @@
 
 
 <script setup>
+
+import { ref } from 'vue'
+
+const consentPrivacy = ref(false)
+const consentOferta = ref(false)
+const showModal = ref(false)
+
+const form = ref({
+    name: '',
+    phone: ''
+})
+
+const errors = ref({
+    name: '',
+    phone: ''
+})
+
+const openModal = () => {
+    showModal.value = true
+}
+
+const closeModal = () => {
+    showModal.value = false
+    form.value = { name: '', phone: '' }
+    errors.value = { name: '', phone: '' }
+}
+
+const submitForm = () => {
+    errors.value = { name: '', phone: '' }
+
+    if (!form.value.name.trim()) {
+        errors.value.name = 'Введите имя'
+    }
+
+    const phonePattern = /^\+?\d[\d\s\-\(\)]{9,}$/
+    if (!phonePattern.test(form.value.phone)) {
+        errors.value.phone = 'Введите корректный номер телефона'
+    }
+
+    if (!errors.value.name && !errors.value.phone) {
+        /*alert(`✅ Имя: ${form.value.name}\n📞 Телефон: ${form.value.phone}\n(тут будет логика оплаты)`)*/
+        closeModal()
+    }
+}
 
 /*Паутина движение */
 
@@ -245,6 +357,34 @@ const sanitizeBlock = (html) => {
 
 
 
+/* Минималистичные скруглённые чекбоксы */
+input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    border-radius: 6px; /* 👈 делает углы мягкими */
+    border: 2px solid #9ca3af; /* серый контур */
+    appearance: none; /* убираем стандартный стиль браузера */
+    -webkit-appearance: none;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
 
+input[type="checkbox"]:checked {
+   /* background-color: #2563eb;*/ /* синий при выборе */
+    /*border-color: #2563eb;*/
+}
+
+input[type="checkbox"]:checked::after {
+    content: "✓";
+    color: white;
+    font-size: 14px;
+    position: absolute;
+    top: 0;
+    left: 3px;
+}
+
+/* Минималистичные скруглённые чекбоксы */
 
 </style>

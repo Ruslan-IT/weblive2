@@ -1,14 +1,18 @@
 #!/bin/bash
-
 set -e
 
-git pull origin master
+# Коммиты локальных изменений и пуш в GitHub
+git add .
+git commit -m "Auto commit before deploy"
+git push origin master
 
-php8.3 composer.phar install --no-dev --optimize-autoloader
+# Сборка проекта (если нужно)
+npm run build
 
-php8.3 artisan cache:clear        # Очистить общий кэш
-php8.3 artisan config:clear       # Очистить кеш конфигураций
-php8.3 artisan route:clear        # Очистить кеш маршрутов
-php8.3 artisan view:clear         # Очистить кеш Blade шаблонов
-php8.3 artisan event:clear        # Очистить кеш событий (если используется)
+# Добавляем сборку в git
+git add -f public/build/
+git commit -m "Build assets for production"
+git push origin master
+
+echo "✅ Локальный деплой готов, код отправлен на GitHub"
 
