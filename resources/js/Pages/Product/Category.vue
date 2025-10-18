@@ -86,11 +86,11 @@
                     </div>
 
                     <!-- Цена -->
-                    <div class="product-prices mt-4">
+<!--                    <div class="product-prices mt-4">
                         <span class="current-price text-xl font-bold text-gray-800">
                             {{ product.price }} ₽
                         </span>
-                    </div>
+                    </div>-->
                 </div>
             </div>
 
@@ -124,7 +124,7 @@
                 <div class="text-right">
                     <Link
                         href="/oferta"
-                        class="text-blue-600 hover:text-blue-800 underline transition"
+                        class="text-black hover:text-blue-800 underline transition"
                         @mouseenter="preloadOferta"
                     >
                         Публичная оферта
@@ -141,10 +141,13 @@
 
 
 <script setup>
+
+/*Паутина движение */
+
 import { onMounted, onBeforeUnmount } from 'vue'
 
 onMounted(() => {
-    // Создаём элемент с паутиной
+    // элемент с паутиной
     const web = document.createElement('div')
     web.classList.add('web-bg')
     document.body.appendChild(web)
@@ -172,7 +175,7 @@ onMounted(() => {
     })
 })
 
-
+/*Паутина движение */
 
 
 
@@ -213,6 +216,9 @@ const sanitizeBlock = (html) => {
     transition: transform 0.3s ease;
     will-change: transform;
 }
+
+
+
 /* Фоновая паутина */
 /*body::before {
     content: "";
@@ -224,6 +230,9 @@ const sanitizeBlock = (html) => {
     pointer-events: none;
 }*/
 
+
+
+/* Фоновая паутина */
 .web-bg {
     position: fixed;
     top: 0;
@@ -237,5 +246,10 @@ const sanitizeBlock = (html) => {
     transition: transform 0.2s ease-out;
     will-change: transform;
 }
+/* Фоновая паутина */
+
+
+
+
 
 </style>
