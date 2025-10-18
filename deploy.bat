@@ -16,4 +16,4 @@ git commit -m "Build assets for production"
 git push origin master
 
 echo ✅ Локальный деплой завершен
-pause
+.bat pause
