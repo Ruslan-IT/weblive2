@@ -85,12 +85,7 @@
                         </div>
                     </div>
 
-                    <!-- Цена -->
-<!--                    <div class="product-prices mt-4">
-                        <span class="current-price text-xl font-bold text-gray-800">
-                            {{ product.price }} ₽
-                        </span>
-                    </div>-->
+
                 </div>
             </div>
 
