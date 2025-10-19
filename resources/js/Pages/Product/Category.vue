@@ -359,10 +359,10 @@ const sanitizeBlock = (html) => {
 
 /* Минималистичные скруглённые чекбоксы */
 input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     border-radius: 6px; /* 👈 делает углы мягкими */
-    border: 2px solid #9ca3af; /* серый контур */
+    /*border: 2px solid #9ca3af; *//* серый контур */
     appearance: none; /* убираем стандартный стиль браузера */
     -webkit-appearance: none;
     outline: none;

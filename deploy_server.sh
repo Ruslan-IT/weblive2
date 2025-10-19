@@ -8,7 +8,7 @@ git pull origin master
 
 echo "✅ Сервер обновлён"
 
-php8.3 composer.phar install --no-dev --optimize-autoloader
+#php8.3 composer.phar install --no-dev --optimize-autoloader
 
 php8.3 artisan cache:clear        # Очистить общий кэш
 php8.3 artisan config:clear       # Очистить кеш конфигураций
