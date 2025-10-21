@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* --- Fix TinyEditor inside Filament repeaters --- */
+.tox.tox-tinymce {
+    z-index: 9999 !important;
+}
+
+.tox-editor-container {
+    overflow: visible !important;
+}
+
+.fi-modal-content,
+.fi-repeater,
+.fi-section {
+    overflow: visible !important;
+}
+
+.tox-tinymce-aux {
+    position: absolute !important;
+    z-index: 99999 !important;
+}

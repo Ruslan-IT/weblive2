@@ -1,0 +1,23 @@
+/* Фикс для TinyEditor внутри Filament Repeater */
+.tox.tox-tinymce {
+    z-index: 9999 !important; /* панель всегда поверх */
+}
+
+.tox-editor-container {
+    overflow: visible !important;
+}
+
+.fi-modal-content, .fi-repeater, .fi-section {
+    overflow: visible !important;
+}
+
+/* Если тулбар уезжает вверх и прилипает к header */
+.tox-tinymce-aux {
+    position: absolute !important;
+    z-index: 99999 !important;
+}
+
+
+body {
+    background: #000000 !important;
+}

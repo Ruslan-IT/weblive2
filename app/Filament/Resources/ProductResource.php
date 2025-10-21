@@ -49,7 +49,7 @@ class ProductResource extends Resource
             ->schema([
 
                 TextInput::make('title')
-                    ->label('Название1')
+                    ->label('Название')
                     ->required()
                     ->live(true)
                     ->maxLength(255)
@@ -87,8 +87,8 @@ class ProductResource extends Resource
                 Repeater::make('content_blocks')
                     ->label('Контентные блоки')
                     ->orderable()
-                    ->collapsible() // ✅ позволяет сворачивать блоки
-                    ->collapsed()   // ✅ по умолчанию все блоки свернуты
+                   /* ->collapsible() */// ✅ позволяет сворачивать блоки
+                   /* ->collapsed() */  // ✅ по умолчанию все блоки свернуты
                     ->itemLabel(function (array $state): ?string {
                         // ✅ Показываем название блока в заголовке свёрнутого блока
                         return match ($state['type'] ?? null) {
@@ -133,6 +133,7 @@ class ProductResource extends Resource
                             ->label('Ссылка кнопки')
                             ->url()
                             ->visible(fn ($get) => $get('type') === 'button'),
+
                     ])
                     ->createItemButtonLabel('Добавить блок')
                     ->columnSpanFull()
@@ -146,6 +147,14 @@ class ProductResource extends Resource
                 Toggle::make('is_featured')
                     ->label('В топе')
                     ->required(),
+
+                FileUpload::make('photo')
+                    ->label('Фото основное')
+                    ->image()
+                    ->directory('images/products/main')
+                    ->disk('public')
+                    ->visibility('public')
+                ,
             ]);
     }
 
@@ -153,7 +162,8 @@ class ProductResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('category_id')
+                TextColumn::make('category.title')
+                    ->label('Раздел')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('title')
