@@ -3,7 +3,7 @@ echo 🚀 Автодеплой запущен...
 
 REM Добавляем изменения и пушим
 git add .
-git commit -m "Auto commit before deploy"
+git commit -m "Auto commit before deplo1y"
 git push origin master
 
 REM Сборка проекта
