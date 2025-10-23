@@ -10,7 +10,7 @@
                 Спасибо за ваш заказ. Мы свяжемся с вами в ближайшее время.
             </p>
             <Link
-                href="/"
+                href="/cat"
                 class="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition"
             >
                 На главную
