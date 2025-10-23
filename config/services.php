@@ -35,4 +35,13 @@ return [
         ],
     ],
 
+    'robokassa' => [
+        'merchant_login' => env('ROBOKASSA_MERCHANT_LOGIN'),
+        'password_1' => env('ROBOKASSA_PASS_1'),
+        'password_2' => env('ROBOKASSA_PASS_2'),
+        'test_mode' => env('ROBOKASSA_TEST_MODE', true),
+        'password_1_test' => env('ROBOKASSA_PASS_1_TEST'),
+        'password_2_test' => env('ROBOKASSA_PASS_2_TEST'),
+    ],
+
 ];

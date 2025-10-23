@@ -132,29 +132,24 @@ import { Head, Link } from '@inertiajs/vue3'
 import Header from '@/Components/Header.vue'
 import Footer from '@/Components/Footer.vue'
 import { onMounted, onBeforeUnmount, ref } from "vue";
+import axios from 'axios'
 
+// --- Получаем пропсы от Laravel через Inertia ---
+const props = defineProps({
+    product: Object
+})
+
+// --- Согласия и модалка ---
 const consentPrivacy = ref(false)
 const consentOferta = ref(false)
 const showModal = ref(false)
 
-// 🔹 Переменные для паутины
-let web = null
-let scrollHandler = null
-let mouseMoveHandler = null
-
-const sanitizeBlock = (html) => {
-    if (!html) return ''
-    return html.replace(/src="\/\/storage\//g, 'src="/storage/')
-}
-
-defineProps({
-    product: Object
-})
-
-/***************** Валидация формы **********/
+// --- Форма ---
 const form = ref({
     name: '',
-    phone: ''
+    phone: '',
+    product: '',
+    amount: 0
 })
 
 const errors = ref({
@@ -162,18 +157,23 @@ const errors = ref({
     phone: ''
 })
 
+// --- Открытие модалки ---
 const openModal = () => {
     showModal.value = true
+    form.value.product = props.product.title
+    form.value.amount = props.product.price ?? 1000
 }
 
+// --- Закрытие модалки ---
 const closeModal = () => {
     showModal.value = false
-    form.value = { name: '', phone: '' }
+    form.value = { name: '', phone: '', product: '', amount: 0 }
     errors.value = { name: '', phone: '' }
 }
 
-const submitForm = () => {
-    errors.value = { name: '', phone: '' }
+// --- Отправка формы ---
+const submitForm = async () => {
+    errors.value = {}
 
     if (!form.value.name.trim()) {
         errors.value.name = 'Введите имя'
@@ -184,13 +184,30 @@ const submitForm = () => {
         errors.value.phone = 'Введите корректный номер телефона'
     }
 
-    if (!errors.value.name && !errors.value.phone) {
-        closeModal()
+    // Если всё ок → отправляем POST на Laravel
+    if (Object.keys(errors.value).length === 0) {
+        try {
+            const { data } = await axios.post('/pay', form.value)
+            // Laravel должен вернуть { url: 'https://auth.robokassa.ru/...' }
+            window.location.href = data.url
+        } catch (e) {
+            errors.value = e.response?.data?.errors || {}
+        }
     }
 }
-/***************** Валидация формы **********/
 
-/******************** Паутина движение **************/
+// --- sanitizeBlock для описаний ---
+const sanitizeBlock = (html) => {
+    if (!html) return ''
+    // фиксим пути /storage
+    return html.replace(/src="\/\/storage\//g, 'src="/storage/')
+}
+
+/******************** Эффект "паутины" ********************/
+let web = null
+let scrollHandler = null
+let mouseMoveHandler = null
+
 const handleScroll = () => {
     if (!web) return
     const scrollOffset = window.scrollY * 0.2
@@ -206,45 +223,31 @@ const handleMouseMove = (e) => {
 }
 
 onMounted(() => {
-    // 🔹 Удаляем существующие элементы паутины (на всякий случай)
     const existingWebs = document.querySelectorAll('.web-bg')
-    existingWebs.forEach(existingWeb => {
-        if (existingWeb.parentNode) {
-            existingWeb.parentNode.removeChild(existingWeb)
-        }
-    })
+    existingWebs.forEach(el => el.parentNode?.removeChild(el))
 
-    // Создаем новый элемент с паутиной
     web = document.createElement('div')
     web.classList.add('web-bg')
     document.body.appendChild(web)
 
-    // Сохраняем ссылки на обработчики для последующего удаления
     scrollHandler = handleScroll
     mouseMoveHandler = handleMouseMove
 
-    // Добавляем обработчики
     window.addEventListener('scroll', scrollHandler)
     window.addEventListener('mousemove', mouseMoveHandler)
 })
 
 onBeforeUnmount(() => {
-    // 🔹 Полностью удаляем элемент паутины при покидании страницы
     if (web && web.parentNode) {
         web.parentNode.removeChild(web)
         web = null
     }
-
-    // Удаляем обработчики
-    if (scrollHandler) {
-        window.removeEventListener('scroll', scrollHandler)
-    }
-    if (mouseMoveHandler) {
-        window.removeEventListener('mousemove', mouseMoveHandler)
-    }
+    if (scrollHandler) window.removeEventListener('scroll', scrollHandler)
+    if (mouseMoveHandler) window.removeEventListener('mousemove', mouseMoveHandler)
 })
-/******************* Паутина движение **************** */
 </script>
+
+
 
 
 <style >
