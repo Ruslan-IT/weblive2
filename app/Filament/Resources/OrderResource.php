@@ -16,6 +16,7 @@ class OrderResource extends Resource
     protected static ?string $model = Order::class;
     protected static ?string $navigationIcon = 'heroicon-o-credit-card';
     protected static ?string $navigationGroup = 'Платежи';
+    protected static ?string $navigationLabel = 'Заказы';
 
     public static function form(Form $form): Form
     {
@@ -34,12 +35,19 @@ class OrderResource extends Resource
                     4 => 'Ошибка',
                 ])
                 ->default(1),
+
             Forms\Components\TextInput::make('payment_method')->label('Метод оплаты')->default('robokassa'),
             Forms\Components\Textarea::make('robokassa_signature')->label('Подпись'),
+
             Forms\Components\Textarea::make('robokassa_response')
                 ->label('Ответ Robokassa')
                 ->rows(8)
-                ->columnSpanFull(),
+                ->afterStateHydrated(function ($component, $state) {
+                    if (is_array($state)) {
+                        $component->state(json_encode($state, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+                    }
+                }),
+
             Forms\Components\DateTimePicker::make('paid_at')->label('Оплачен в'),
         ]);
     }
