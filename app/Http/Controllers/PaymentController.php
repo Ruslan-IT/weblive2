@@ -20,8 +20,8 @@ class PaymentController extends Controller
         //$this->pass1 = config('services.robokassa.password_1');
         //$this->pass2 = config('services.robokassa.password_2');
 
-        $this->pass1 = config('services.robokassa.password_1_test');
-        $this->pass2 = config('services.robokassa.password_2_test');
+        $this->pass1 = config('services.robokassa.password_1');
+        $this->pass2 = config('services.robokassa.password_2');
 
         $this->isTest = config('services.robokassa.test_mode', true);
     }
