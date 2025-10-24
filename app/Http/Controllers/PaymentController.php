@@ -6,6 +6,10 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
+use Filament\Notifications\Notification;
+use Filament\Notifications\Events\DatabaseNotificationsSent;
+use App\Models\User;
+
 class PaymentController extends Controller
 {
     private string $merchantLogin;
@@ -128,6 +132,21 @@ class PaymentController extends Controller
                 'robokassa_signature' => $crc,
                 'paid_at' => now(),
             ]);
+
+            // 🔔 Отправляем уведомление всем администраторам Filament
+            $admins = User::where('is_admin', true)->get(); // Или по твоей логике ролей
+
+            foreach ($admins as $admin) {
+                Notification::make()
+                    ->title('💳 Новый платёж Robokassa')
+                    ->body("
+                    **{$order->name}** оплатил заказ **#{$order->id}**
+                    Товар: *{$order->product}*
+                    Сумма: **{$order->amount} ₽**
+                    ")
+                    ->success()
+                    ->sendToDatabase($admin);
+            }
 
             echo "OK$invId\n";
         } else {
