@@ -7,7 +7,7 @@
         <nav class="bg-gray-100 py-4">
             <div class="max-w-[1000px] mx-auto px-6">
                 <div class="flex items-center space-x-2 text-sm">
-                    <Link href="/cat" class="text-gray-500 hover:text-gray-700">Категории</Link>
+                    <Link href="/category" class="text-gray-500 hover:text-gray-700">Категории</Link>
                     <span class="text-gray-400">/</span>
                     <Link :href="`/category/${product.category.slug}`" class="text-gray-500 hover:text-gray-700">
                         {{ product.category.title }}
