@@ -38,7 +38,15 @@ class PaymentController extends Controller
             'amount' => 'required|numeric',
         ]);
 
-        $order = Order::create($validated);
+        // При создании заказа
+        $order = Order::create([
+            'name' => $validated['name'],
+            'phone' => $validated['phone'],
+            'product' => $validated['product'],
+            'amount' => $validated['amount'],
+            'status' => 1, // "Ожидает оплаты"
+            'payment_method' => 'robokassa',
+        ]);
 
         // Подпись для Robokassa
         $signature = md5("{$this->merchantLogin}:{$order->amount}:{$order->id}:{$this->pass1}");
@@ -78,7 +86,14 @@ class PaymentController extends Controller
         $myCrc = strtoupper(md5("$outSum:$invId:{$this->pass1}"));
 
         if ($myCrc === $crc) {
-            $order->update(['status' => 2]);
+
+            $order->update([
+                'status' => 2,
+                'robokassa_signature' => $crc,
+                'robokassa_response' => $request->all(),
+                'paid_at' => now(),
+            ]);
+
             return Inertia::render('Payment/Success', [
                 'order' => $order,
             ]);
@@ -106,9 +121,21 @@ class PaymentController extends Controller
         $myCrc = strtoupper(md5("$outSum:$invId:{$this->pass2}"));
 
         if ($myCrc === $crc) {
-            $order->update(['status' => 2]);
+
+            $order->update([
+                'status' => 2,
+                'robokassa_response' => $request->all(),
+                'robokassa_signature' => $crc,
+                'paid_at' => now(),
+            ]);
+
             echo "OK$invId\n";
         } else {
+            $order->update([
+                'status' => 4, // Ошибка подписи
+                'robokassa_response' => $request->all(),
+            ]);
+
             echo "bad sign\n";
         }
     }
@@ -119,8 +146,12 @@ class PaymentController extends Controller
     public function fail(Request $request)
     {
         $invId = $request->get('InvId');
+
         if ($order = Order::find($invId)) {
-            $order->update(['status' => 3]);
+            $order->update([
+                'status' => 3,
+                'robokassa_response' => $request->all(),
+            ]);
         }
 
         return Inertia::render('Payment/Fail', [
