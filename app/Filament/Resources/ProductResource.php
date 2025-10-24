@@ -41,7 +41,7 @@ class ProductResource extends Resource
     // 🔹 Множественное число (например, в хлебных крошках)
     protected static ?string $pluralModelLabel = 'Лендинги';
 
-    protected static ?string $navigationIcon = 'heroicon-o-globe';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
