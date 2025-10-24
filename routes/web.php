@@ -12,14 +12,15 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 
-Route::get('/', [IndexController::class, 'index'])->name('index');
+//Route::get('/', [IndexController::class, 'index'])->name('index');
 
 
 Route::get('/oferta', [OfertaController::class, 'index'])->name('oferta');
 Route::get('/privacy', [PrivacyController::class, 'index'])->name('privacy');
 
 
-Route::get('/cat', [ProductController::class, 'index'])->name('categories');
+Route::get('/', [ProductController::class, 'index'])->name('categories');
+Route::get('/', [ProductController::class, 'index'])->name('categories');
 
 // все разделы для лендинга
 Route::get('/category/{slug}', [ProductController::class, 'show'])->name('categories.show');
